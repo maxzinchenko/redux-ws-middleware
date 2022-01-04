@@ -269,8 +269,7 @@ dispatch({ type: GET_POSTS, data: { offset: 0, limit: 20 } });
 ## Options example
 
 ```ts
-import { createSocketMiddleware } from 'redux-awesome-socket-middleware';
-import { MiddlewareOptions } from 'redux-awesome-socket-middleware/typedef';
+import { createSocketMiddleware, MiddlewareOptions } from 'redux-awesome-socket-middleware';
 
 type SocketRes = {
   method: string;
