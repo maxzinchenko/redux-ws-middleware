@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "moduleResolution": "Node",
+    "module": "esnext",
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "lib": ["esnext", "dom"],
+    "target": "esnext",
+    "noEmit": false,
+    "emitDeclarationOnly": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": false,
+    "noImplicitThis": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "types": ["jest"],
+    "outDir": "./dist"
+  },
+  "include": ["./src"],
+  "exclude": ["node_modules", "dist"]
+}
