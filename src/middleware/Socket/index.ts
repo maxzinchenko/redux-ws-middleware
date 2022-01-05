@@ -1,11 +1,15 @@
-import { MiddlewareApi, MiddlewareOptions, SocketAction } from '../../typedef';
+import { MiddlewareOptions, SocketAction, MiddlewareAPI } from '../../typedef';
 import { Socket } from '../../services/Socket';
 
 
-export const createSocketMiddleware = ({ actionTypes, completedActionTypes, ...socketOptions }: MiddlewareOptions<any, any>) => {
+export const createSocketMiddleware = <Req, Res, SReq = Req, DRes = Res>({
+  actionTypes,
+  completedActionTypes,
+  ...socketOptions
+}: MiddlewareOptions<Req, Res, SReq, DRes>) => {
   const [sendType, connectType, disconnectType] = actionTypes;
 
-  return ({ dispatch }: MiddlewareApi) => {
+  return ({ dispatch }: MiddlewareAPI) => {
     const socket = new Socket(socketOptions, dispatch, completedActionTypes);
 
     return (next: (action: SocketAction) => void) => (action: SocketAction) => {
@@ -22,6 +26,6 @@ export const createSocketMiddleware = ({ actionTypes, completedActionTypes, ...s
       }
 
       return next(action);
-    }
-  }
-}
+    };
+  };
+};

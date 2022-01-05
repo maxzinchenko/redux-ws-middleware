@@ -1,3 +1,5 @@
+import { Dispatch } from '../../typedef';
+
 export enum SocketState {
   CONNECTING,
   OPEN,
@@ -21,21 +23,13 @@ export enum SocketCode {
   FORCE_CLOSE = 1001
 }
 
-type Action<T = string> = {
-  type: T
-};
-
-export type Dispatch<A extends Action = Action>  = {
-  <T extends A>(action: T): T;
-}
-
 export type Serializer<Req = Object, SReq = Object> = (req: Req) => SReq;
 export type Deserializer<Res = Object, DRes = Object> = (res: Res) => DRes;
 
-export type OnMessageCallback<Res> = (res: Res, dispatch: Dispatch<Action>) => void;
+export type OnMessageCallback<Res> = (res: Res, dispatch: Dispatch) => void;
 
 
-export type Options<Req = {}, Res = {}, SReq extends unknown = Req, DRes extends unknown = Res> = {
+export type Options<Req = any, Res = any, SReq = Req, DRes = Res> = {
   url: string;
   onMessage: OnMessageCallback<DRes>;
   autoConnect?: boolean;

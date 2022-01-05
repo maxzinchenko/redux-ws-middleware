@@ -1,4 +1,5 @@
-import { Dispatch, Listeners, Options, SocketCode, SocketListenerType, SocketActionType, SocketState } from './typedef';
+import { Dispatch } from '../../typedef';
+import { Listeners, Options, SocketCode, SocketListenerType, SocketActionType, SocketState } from './typedef';
 
 
 const RECONNECTION_INTERVAL = 1000;
@@ -61,7 +62,7 @@ export class Socket {
 
     this.#log('Received.', deserializedData);
 
-    this.#options.onMessage(deserializedData, this.#dispatch)
+    this.#options.onMessage(deserializedData, this.#dispatch);
   }
 
   #handleError = (event: Event) => {
@@ -98,7 +99,7 @@ export class Socket {
 
     listeners.forEach(listener => {
       this.#ws![method](...listener);
-    })
+    });
 
     if (add) return;
     this.#ws = null;
