@@ -21,6 +21,7 @@ const plugins = [
   resolve({ extensions }),
   typescript(),
   commonJS(),
+  terser(),
   externalDeps()
 ];
 
@@ -44,7 +45,6 @@ const configProduction = {
   plugins: [
     ...plugins,
     replace({ 'process.env.NODE_ENV': '"production"', delimiters: ['', ''] }),
-    terser(),
     size({ writeFile: false })
   ]
 };
