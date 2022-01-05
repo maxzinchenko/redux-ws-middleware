@@ -1,6 +1,6 @@
 {
   "name": "redux-awesome-socket-middleware",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "This package makes web socket manage much easier with redux",
   "author": {
     "name": "Max Zinchenko",
@@ -57,6 +57,9 @@
   "peerDependencies": {},
   "devDependencies": {
     "@babel/cli": "7.13.14",
+    "@babel/plugin-proposal-private-methods": "7.16.7",
+    "@babel/plugin-proposal-private-property-in-object": "7.16.7",
+    "@babel/preset-env": "7.16.7",
     "@rollup/plugin-replace": "2.3.4",
     "@rollup/plugin-typescript": "8.2.1",
     "@typescript-eslint/parser": "4.22.0",

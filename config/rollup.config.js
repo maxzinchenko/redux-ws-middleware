@@ -2,6 +2,7 @@ import replace from '@rollup/plugin-replace';
 import resolve from 'rollup-plugin-node-resolve';
 import commonJS from 'rollup-plugin-commonjs';
 import externalDeps from 'rollup-plugin-peer-deps-external';
+import babel from 'rollup-plugin-babel';
 import size from 'rollup-plugin-size';
 import { terser } from 'rollup-plugin-terser';
 import typescript from '@rollup/plugin-typescript';
@@ -18,11 +19,11 @@ const output = {
 };
 
 const plugins = [
+  externalDeps(),
   resolve({ extensions }),
   typescript(),
   commonJS(),
-  terser(),
-  externalDeps()
+  babel({ extensions })
 ];
 
 const configDevelopment = {
@@ -44,6 +45,7 @@ const configProduction = {
   external,
   plugins: [
     ...plugins,
+    terser(),
     replace({ 'process.env.NODE_ENV': '"production"', delimiters: ['', ''] }),
     size({ writeFile: false })
   ]
