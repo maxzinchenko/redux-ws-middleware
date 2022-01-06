@@ -78,7 +78,7 @@ actionTypes: ['SEND', 'CONNECT', 'DISCONNECT']
 actionTypes: [new RegExp(/_REQUEST/g), 'CONNECT', 'DISCONNECT']
 ```
 
-If you don't need these: `CONNECT`, `DISCONNECT` so just don't sent them.
+If you don't need these: `CONNECT`, `DISCONNECT` so just don't send them.
 
 ```ts
 actionTypes: ['SEND', 'CONNECT']
