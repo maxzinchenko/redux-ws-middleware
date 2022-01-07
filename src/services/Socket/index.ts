@@ -1,160 +1,225 @@
-import { Dispatch } from '../../typedef';
-import { Listeners, Options, SocketCode, SocketListenerType, SocketActionType, SocketState } from './typedef';
+import { Dispatch } from '../../middleware/Socket/typedef';
+import { Options, WebSocketClosingCode, WebSocketEvent, SocketActionType, LogType, ShouldReconnect, WebSocketState } from './typedef';
 
 
 const RECONNECTION_INTERVAL = 1000;
 
 
-export class Socket {
-  readonly #options: Options;
+export class WebSocketService<Req, Res, SReq = Req, DRes = Res> {
+  readonly #options: Omit<Options<Req, Res, SReq, DRes>, 'shouldReconnect' | 'reconnectionInterval'>;
   readonly #dispatch: Dispatch;
+  readonly #shouldReconnect: ShouldReconnect | boolean;
+  readonly #reconnectionInterval: number | number[];
   readonly #actionTypes: [string, string];
-  readonly #interval: number | number[];
 
   #ws: null | WebSocket = null;
+  #reconnections = 0;
   #timeout: null | NodeJS.Timeout = null;
-  #reconnectionsCount = 0;
 
-  constructor(options: Options, dispatch: Dispatch, actionTypes: [string, string]) {
-    this.#options = options;
+  constructor(options: Options<Req, Res, SReq, DRes>, dispatch: Dispatch, actionTypes: [string, string]) {
+    const { shouldReconnect, reconnectionInterval, ...restOptions } = options;
+
+    this.#options = restOptions;
+    this.#shouldReconnect = shouldReconnect ?? true;
+    this.#reconnectionInterval = reconnectionInterval ?? RECONNECTION_INTERVAL;
+
     this.#dispatch = dispatch;
     this.#actionTypes = actionTypes;
-    this.#interval = options.reconnectionInterval || RECONNECTION_INTERVAL;
 
-    // This "false" check is required cause the value might be "undefined"
-    if (options.autoConnect === false) return;
-    this.connect();
-  }
-
-  connect = () => {
-    if (this.#ws?.url === this.#options.url && this.#ws?.readyState === SocketState.OPEN) return;
-
-    this.#ws = new WebSocket(this.#options.url, this.#options.protocols);
-    this.#listeners();
-  }
-
-  sendMessage = <D = {}>(data: D) => {
-    this.#checkConnection();
-
-    const serializedData = this.#options.serialize?.(data) || data;
-    this.#ws!.send(JSON.stringify(serializedData));
-
-    this.#log('Sent.', serializedData);
-  }
-
-  disconnect = () => {
-    this.#checkConnection();
-
-    this.#ws!.close(SocketCode.FORCE_CLOSE);
-  }
-
-  #handleOpen = (_: Event) => {
-    this.#log('Connected.');
-
-    this.#removeReconnectionJob();
-
-    this.#dispatchAction(SocketActionType.CONNECTED);
-  }
-
-  #handleMessage = (event: MessageEvent) => {
-    const data = JSON.parse(event.data);
-    const deserializedData = this.#options.deserialize?.(data) || data;
-
-    this.#log('Received.', deserializedData);
-
-    this.#options.onMessage(deserializedData, this.#dispatch);
-  }
-
-  #handleError = (event: Event) => {
-    this.#logError('Error.', event);
-  }
-
-  #handleClose = (event: CloseEvent) => {
-    this.#listeners(false);
-
-    const { code, reason } = event;
-    const forceDisconnection = code === SocketCode.FORCE_CLOSE;
-
-    if (forceDisconnection) {
-      this.#removeReconnectionJob();
-      this.#logError('Disconnected.', event);
-    } else {
-      this.#setReconnectionJob();
+    if (options.debug) {
+      this.#log(LogType.LOG, 'Debug mode is ON', this.#options);
     }
 
-    this.#dispatchAction(SocketActionType.DISCONNECTED, { reason, forceDisconnection, code });
+    // This "false" check is required since the value might be "undefined".
+    if (options.autoConnect === false) return;
+    this.open();
   }
 
-  #listeners = (add = true) => {
-    if (!this.#ws) return;
+  /*
+   * WS Instance State Managers
+   */
 
-    const listeners: Listeners = [
-      [SocketListenerType.OPEN, this.#handleOpen],
-      [SocketListenerType.MESSAGE, this.#handleMessage],
-      [SocketListenerType.ERROR, this.#handleError],
-      [SocketListenerType.CLOSE, this.#handleClose]
-    ];
+  open = () => {
+    if (typeof window === 'undefined') return;
 
-    const method = add ? 'addEventListener' : 'removeEventListener';
+    this.#ws = new WebSocket(this.#options.url, this.#options.protocols);
+    this.#setListeners();
+  }
 
-    listeners.forEach(listener => {
-      this.#ws![method](...listener);
-    });
+  send = (data: Req) => {
+    this.#checkOpenStateAndThrowError();
 
-    if (add) return;
+    const message = this.#serializeData(data);
+    this.#ws!.send(message);
+
+    this.#log(LogType.LOG, 'Sent', message);
+  }
+
+  close = (code?: number) => {
+    this.#checkOpenStateAndThrowError();
+
+    this.#ws!.close(code);
+    this.#removeListeners();
+
     this.#ws = null;
   }
 
-  #getReconnectionInterval = () => {
-    return typeof this.#interval === 'number'
-      ? this.#interval
-      : this.#interval[this.#reconnectionsCount];
+  /*
+   * Signal Listeners Managers
+   */
+
+  #handleOpen = (_: Event) => {
+    this.#log(LogType.LOG, 'Connected');
+
+    this.#dispatchAction(SocketActionType.CONNECTED);
+
+    this.#removeReconnectionJob();
   }
 
-  #countReconnection = () => {
-    if (typeof this.#interval === 'number') return;
+  #handleMessage = (event: MessageEvent) => {
+    const data = this.#deserializeData(JSON.parse(event.data));
 
-    const { length } = this.#interval;
+    this.#log(LogType.LOG, 'Received', data);
 
-    return this.#reconnectionsCount < length - 1 ? this.#reconnectionsCount + 1 : length - 1;
+    this.#options.onMessage(data, this.#dispatch);
   }
 
-  #setReconnectionJob = () => {
+  #handleError = (event: Event) => {
+    this.#log(LogType.ERROR, 'Error', event);
+  }
+
+  #handleClose = (event: CloseEvent) => {
+    this.#log(LogType.LOG, 'Closed');
+
+    const { code, reason } = event;
+    const forceDisconnection = code === WebSocketClosingCode.FORCE_CLOSE;
+
+    this.#dispatchAction(SocketActionType.DISCONNECTED, { reason, forceDisconnection, code });
+
+    if (forceDisconnection && typeof this.#shouldReconnect === 'boolean') {
+      this.#log(LogType.LOG, 'Disconnected', { code, reason });
+      return;
+    } else if (typeof this.#shouldReconnect === 'boolean') {
+      this.#startReconnectionJob();
+      return;
+    }
+
+    if (this.#shouldReconnect(event)) {
+      this.#startReconnectionJob();
+    }
+  }
+
+  /*
+   * Event Listeners Managers
+   */
+
+  #setListeners = () => {
+    if (!this.#ws) return;
+
+    this.#ws.addEventListener(WebSocketEvent.OPEN, this.#handleOpen);
+    this.#ws.addEventListener(WebSocketEvent.MESSAGE, this.#handleMessage);
+    this.#ws.addEventListener(WebSocketEvent.ERROR, this.#handleError);
+    this.#ws.addEventListener(WebSocketEvent.CLOSE, this.#handleClose);
+  }
+
+  #removeListeners = () => {
+    if (!this.#ws) return;
+
+    this.#ws.removeEventListener(WebSocketEvent.OPEN, this.#handleOpen);
+    this.#ws.removeEventListener(WebSocketEvent.MESSAGE, this.#handleMessage);
+    this.#ws.removeEventListener(WebSocketEvent.ERROR, this.#handleError);
+    this.#ws.removeEventListener(WebSocketEvent.CLOSE, this.#handleClose);
+  }
+
+  /*
+   * Reconnection Managers
+   */
+
+  #getReconnectionInterval = (interval = this.#reconnectionInterval) => {
+    if (typeof interval === 'number') return interval;
+    if (interval.length) return 0;
+
+    const lastIntervalsIdx = interval.length - 1;
+
+    if (this.#reconnections <= lastIntervalsIdx) {
+      return interval[this.#reconnections];
+    }
+
+    return interval[lastIntervalsIdx];
+  }
+
+  #startReconnectionJob = () => {
     const interval = this.#getReconnectionInterval();
 
-    this.#log(`Disconnected. Reconnect in ${interval} milliseconds.`);
-    this.#timeout = setTimeout(this.connect, interval);
+    this.#log(LogType.LOG, `Disconnected. Reconnect in ${interval} milliseconds`);
 
-    this.#countReconnection();
+    this.#timeout = setTimeout(this.open, interval);
+    this.#incrementReconnectionCount();
   }
 
   #removeReconnectionJob = () => {
-    if (!this.#timeout) return;
-
-    clearInterval(this.#timeout);
+    clearTimeout(this.#timeout!);
     this.#timeout = null;
-    this.#reconnectionsCount = 0;
+    this.#reconnections = 0;
   }
 
-  #checkConnection = () => {
-    if (this.#ws?.readyState === SocketState.OPEN) return;
-
-    throw new Error(`[${this.#options.url}] Not connected. You need to wait until the socket is connected and ready.`);
+  #incrementReconnectionCount = (start = this.#reconnections) => {
+    this.#reconnections = start + 1;
   }
+
+  /*
+   * Data Type Managers
+   */
+
+  #serializeData = (data: Req) => {
+    const serializedData = this.#options.serialize?.(data) || data;
+
+    return typeof serializedData === 'string' ? serializedData : JSON.stringify(data);
+  }
+
+  #deserializeData = (data: Res) => {
+    const deserializedData = this.#options.deserialize?.(data) || data;
+
+    return typeof deserializedData === 'string' ? JSON.parse(deserializedData) : deserializedData;
+  }
+
+  /*
+   * Redux Actions Managers
+   */
 
   #dispatchAction = (type: SocketActionType, payload?: unknown) => {
     this.#dispatch({ type: this.#actionTypes[type], ...(payload ? { payload } : {}) });
   }
 
-  #log = (message: string, meta?: unknown) => {
-    if (!this.#options.debug) return;
+  /*
+   * Throwing Error Checkers
+   */
 
-    // eslint-disable-next-line no-console
-    console.log(`[${this.#options.url}] ${message}\n`, ...(meta ? [meta] : []));
+  #checkOpenStateAndThrowError = () => {
+    if (this.#ws && this.#ws.readyState === WebSocketState.OPEN) return;
+
+    throw new Error('WebSocket is not connected. Make sure it is connected before triggering an action.');
   }
 
-  #logError = (message: string, meta: unknown) => {
-    // eslint-disable-next-line no-console
-    console.error(`[${this.#options.url}] ${message}\n`, ...(meta ? [meta] : []));
+  /*
+   * Loggers
+   */
+
+  #log = (type: LogType, title: string, rawInfo?: string | object | null) => {
+    if (!this.#options.debug) return;
+
+    const info = typeof rawInfo === 'string' ? JSON.parse(rawInfo) : rawInfo;
+
+    if (type === LogType.LOG) {
+      // eslint-disable-next-line no-console
+      console.groupCollapsed('[awesome-socket]', title);
+      // eslint-disable-next-line no-console
+      console.log(...(info ? [info] : []));
+      // eslint-disable-next-line no-console
+      console.groupEnd();
+    } else {
+      // eslint-disable-next-line no-console
+      console[type](`[awesome-socket] ${title}`, '\n', ...(info ? [info] : []));
+    }
   }
 }

@@ -1,2 +1,2 @@
 export * from './middleware/Socket';
-export type { MiddlewareOptions } from './typedef';
+export type { MiddlewareOptions } from './middleware/Socket/typedef';

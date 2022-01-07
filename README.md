@@ -1,6 +1,6 @@
 # Redux Awesome Socket Middleware
 
-This package makes socket managing much easier in redux.
+This package makes web socket management much easier with redux.
 
 <a href="https://npmjs.com/package/redux-awesome-socket-middleware" target="\_parent">
   <img alt="npm version" src="https://img.shields.io/npm/v/redux-awesome-socket-middleware.svg" />
@@ -28,18 +28,19 @@ yarn add redux-awesome-socket-middleware
 
 ## Options
 
-| Name                                          | Required | Type                                                | Default     |
-| --------------------------------------------- | -------- | --------------------------------------------------- | ----------- |
-| [url](#url)                                   | Yes      | `string`                                            | -           |
-| [actionTypes](#actionTypes)                   | Yes      | `Array<string OR RegExp>`                           | -           |
-| [completedActionTypes](#completedActionTypes) | Yes      | `Array<string>`                                     | -           |
-| [onMessage](#onMessage)                       | Yes      | `(res: Res, dispatch: Dispatch<AnyAction>) => void` | -           |
-| [autoConnect](#autoConnect)                   | No       | `boolean`                                           | `true`      |
-| [debug](#debug)                               | No       | `boolean`                                           | -           |
-| [protocols](#protocols)                       | No       | `string OR string[]`                                | -           |
-| [reconnectionInterval](#reconnectionInterval) | No       | `number OR number[]`                                | `1000`      |
-| [serialize](#serialize)                       | No       | `(req: Req) => SReq`                                | -           | 
-| [deserialize](#deserialize)                   | No       | `(res: Res) => DRes`                                | -           |
+| Name                                           | Required | Type                                                | Default     |
+| ---------------------------------------------- | -------- | --------------------------------------------------- | ----------- |
+| [url](#url)                                    | Yes      | `string`                                            | -           |
+| [actionTypes](#actionTypes)                    | Yes      | `Array<string OR RegExp>`                           | -           |
+| [completedActionTypes](#completedActionTypes)  | Yes      | `Array<string>`                                     | -           |
+| [onMessage](#onMessage)                        | Yes      | `(res: Res, dispatch: Dispatch<AnyAction>) => void` | -           |
+| [autoConnect](#autoConnect)                    | No       | `boolean`                                           | `true`      |
+| [shouldReconnect](#shouldReconnect)            | No       | `((event: CloseEvent) => boolean) OR boolean`         | `true`      |
+| [debug](#debug)                                | No       | `boolean`                                           | -           |
+| [protocols](#protocols)                        | No       | `string OR string[]`                                | -           |
+| [reconnectionIntervals](#reconnectionInterval) | No       | `number OR number[]`                                | `1000`      |
+| [serialize](#serialize)                        | No       | `(req: Req) => SReq`                                | -           | 
+| [deserialize](#deserialize)                    | No       | `(res: Res) => DRes`                                | -           |
 
 --------
 
@@ -135,18 +136,29 @@ onMessage: (data, dispatch) => {
 
 `boolean` - (`true` by default)
 
-When `true`, you don't need to send anything else to connect it.<br>
-When `false`, you need to dispatch the connect action with a type  `actionTypes[1]`.
+When `true` you don't need to send anything else to connect it.<br>
+When `false` you need to dispatch the connect action with a type  `actionTypes[1]`.
 
 ```ts
 autoConnect: false
+```
+
+## shouldReconnect
+
+`((event: CloseEvent) => boolean) | boolean` - (`true` by default)
+
+When `true` the socket tries to reconnect if close status !== 1001.<br>
+When predicate is passed you are able to decide if the sockets needs to be reconnected.
+
+```ts
+shouldReconnect: false
 ```
 
 ## debug
 
 `boolean`
 
-When `true`, the package shows additional logs.
+When `true` the package shows additional logs.
 
 ```ts
 debug: ture
@@ -171,7 +183,7 @@ protocols: ['some protocol']
 `number | number[]` - (`1000` by default)
 
 <b>In milliseconds.</b><br>
-When array, each new connection uses the next number from the array for a timeout to avoid DDOSing a server.
+When array each new connection uses the next number from the array for a timeout to avoid DDOSing a server.
 
 ```ts
 reconnectionInterval: 1000
