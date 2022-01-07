@@ -8,12 +8,6 @@ This package makes web socket management much easier with redux.
   <img alt="npm downloads" src="https://img.shields.io/npm/dm/redux-awesome-socket-middleware.svg" />
 </a>
 
-`v1.0.5` - Stable
-
-## Changelog
-
-`v1.0.5` - Fixed ESNext webpack compilation/parsing error<br>
-
 ## Installation
 
 ```
