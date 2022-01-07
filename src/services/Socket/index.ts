@@ -89,8 +89,6 @@ export class WebSocketService<Req, Res, SReq = Req, DRes = Res> {
   }
 
   #handleClose = (event: CloseEvent) => {
-    this.#log(LogType.LOG, 'Closed');
-
     const { code, reason } = event;
     const forceDisconnection = code === WebSocketClosingCode.FORCE_CLOSE;
 
