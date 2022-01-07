@@ -28,11 +28,11 @@
   "module": "es/index.js",
   "files": [
     "dist",
-    "typedef"
+    "types"
   ],
   "scripts": {
     "build": "rimraf ./dist && cross-env NODE_ENV=production rollup -c config/rollup.config.js",
-    "build:typedef": "rimraf ./typedef && tsc --project ./tsconfig.types.json",
+    "build:types": "rimraf ./types && tsc --project ./tsconfig.types.json",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
   },

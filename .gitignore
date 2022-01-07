@@ -5,7 +5,7 @@ node_modules
 
 # Production builds
 dist
-typedef
+types
 
 # Logs
 npm-debug.log*
