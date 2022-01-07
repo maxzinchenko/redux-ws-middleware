@@ -77,7 +77,7 @@ export class WebSocketService<Req, Res, SReq = Req, DRes = Res> {
   }
 
   #handleMessage = (event: MessageEvent) => {
-    const data = this.#deserializeData(JSON.parse(event.data));
+    const data = this.#deserializeData(event.data);
 
     this.#log(LogType.LOG, 'Received', data);
 
@@ -175,8 +175,8 @@ export class WebSocketService<Req, Res, SReq = Req, DRes = Res> {
     return typeof serializedData === 'string' ? serializedData : JSON.stringify(data);
   }
 
-  #deserializeData = (data: Res) => {
-    const deserializedData = this.#options.deserialize?.(data) || data;
+  #deserializeData = (data: string) => {
+    const deserializedData = this.#options.deserialize?.(JSON.parse(data)) || data;
 
     return typeof deserializedData === 'string' ? JSON.parse(deserializedData) : deserializedData;
   }
