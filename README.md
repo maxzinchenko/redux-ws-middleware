@@ -1,6 +1,7 @@
 # Redux Awesome Socket Middleware
 
-This package makes web socket management much easier with redux.
+This package makes web socket management much easier with redux.<br>
+The package is built over the <a href="https://developer.mozilla.org/en-US/docs/Web/API/WebSocket/WebSocket">WebSocket</a> constructor from browser API.
 
 <a href="https://npmjs.com/package/redux-awesome-socket-middleware" target="\_blank">
   <img alt="npm version" src="https://img.shields.io/npm/v/redux-awesome-socket-middleware.svg" />
@@ -12,6 +13,35 @@ This package makes web socket management much easier with redux.
   <img alt="npm downloads" src="https://img.shields.io/npm/dm/redux-awesome-socket-middleware.svg" />
 </a>
 
+
+---
+
+# Structure
+
+- [Installation](#installation)
+- [Options](#options)
+  - [url](#url)
+  - [actionTypes](#actionTypes)
+  - [completedActionTypes](#completedActionTypes)
+  - [onMessage](#onMessage)
+  - [autoConnect](#autoConnect)
+  - [protocols](#protocols)
+  - [shouldReconnect](#shouldReconnect)
+  - [reconnectionIntervals](#reconnectionInterval)
+  - [serialize](#serialize)
+  - [deserialize](#deserialize)
+  - [debug](#debug)
+- [Usage](#usage)
+  - [Connecting](#connecting)
+  - [Disconnecting](#disconnecting)
+  - [Sending data](#sending-data)
+- [MiddlewareOptions declaration](#middlewareoptions-declaration)
+  - [Passing own types to MiddlewareOptions type](#passing-own-types-to-middlewareoptions-type)
+
+
+---
+
+
 ## Installation
 
 ```
@@ -21,30 +51,6 @@ npm install redux-awesome-socket-middleware
 # using yarn
 yarn add redux-awesome-socket-middleware
 ```
-
----
-
-
-- [Installation](#installation)
-- [Options](#options)
-    - [url](#url)
-    - [actionTypes](#actionTypes)
-    - [completedActionTypes](#completedActionTypes)
-    - [onMessage](#onMessage)
-    - [autoConnect](#autoConnect)
-    - [protocols](#protocols)
-    - [shouldReconnect](#shouldReconnect)
-    - [reconnectionIntervals](#reconnectionInterval)
-    - [serialize](#serialize)
-    - [deserialize](#deserialize)
-    - [debug](#debug)
-- [Usage](#usage)
-    - [Connecting](#connecting)
-    - [Disconnecting](#disconnecting)
-    - [Sending data](#sending-data)
-- [MiddlewareOptions declaration](#middlewareoptions-declaration)
-  - [Passing own types to MiddlewareOptions type](#passing-own-types-to-middlewareoptions-type)
-
 
 ---
 

@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.4
+
+- Fixed params that `serialize` and `deserialize` functions get called with.
+
 ## 1.1.3
 
 - Fixed types location.

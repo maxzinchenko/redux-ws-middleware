@@ -13,11 +13,17 @@ export class SerializerService<Serialize, Deserialize, Serialized = Serialize, D
   serialize = (data: Serialize): string => {
     const serializedData = this.#serializer?.(data) || data;
 
-    return typeof serializedData === 'string' ? serializedData : JSON.stringify(data);
+    return typeof serializedData === 'string' ? serializedData : JSON.stringify(serializedData);
   }
 
   deserialize = (data: string): Deserialized => {
-    const parsedData = JSON.parse(data);
+    let parsedData;
+
+    try {
+      parsedData = JSON.parse(data);
+    } catch {
+      parsedData = data;
+    }
 
     return this.#deserializer?.(parsedData) || parsedData;
   }
