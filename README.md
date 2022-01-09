@@ -18,7 +18,32 @@ npm install redux-awesome-socket-middleware
 yarn add redux-awesome-socket-middleware
 ```
 
-[comment]: <> (## [Example of Usage]&#40;https://github.com/maxzinchenko/react-awesome-form-hook/blob/master/example/src/App.tsx&#41;)
+---
+
+
+- [Installation](#installation)
+- [Options](#options)
+    - [url](#url)
+    - [actionTypes](#actionTypes)
+    - [completedActionTypes](#completedActionTypes)
+    - [onMessage](#onMessage)
+    - [autoConnect](#autoConnect)
+    - [protocols](#protocols)
+    - [shouldReconnect](#shouldReconnect)
+    - [reconnectionIntervals](#reconnectionInterval)
+    - [serialize](#serialize)
+    - [deserialize](#deserialize)
+    - [debug](#debug)
+- [Usage](#usage)
+    - [Connecting](#connecting)
+    - [Disconnecting](#disconnecting)
+    - [Sending data](#sending-data)
+- [Options example](#options-example)
+  - [Passing own types to Options type](#passing-own-types-to-options-type)
+
+
+---
+
 
 ## Options
 
@@ -29,12 +54,12 @@ yarn add redux-awesome-socket-middleware
 | [completedActionTypes](#completedActionTypes)  | Yes      | `Array<string>`                                     | -           |
 | [onMessage](#onMessage)                        | Yes      | `(res: Res, dispatch: Dispatch<AnyAction>) => void` | -           |
 | [autoConnect](#autoConnect)                    | No       | `boolean`                                           | `true`      |
-| [shouldReconnect](#shouldReconnect)            | No       | `((event: CloseEvent) => boolean) OR boolean`         | `true`      |
-| [debug](#debug)                                | No       | `boolean`                                           | -           |
 | [protocols](#protocols)                        | No       | `string OR string[]`                                | -           |
+| [shouldReconnect](#shouldReconnect)            | No       | `((event: CloseEvent) => boolean) OR boolean`         | `true`      |
 | [reconnectionIntervals](#reconnectionInterval) | No       | `number OR number[]`                                | `1000`      |
 | [serialize](#serialize)                        | No       | `(req: Req) => SReq`                                | -           | 
 | [deserialize](#deserialize)                    | No       | `(res: Res) => DRes`                                | -           |
+| [debug](#debug)                                | No       | `boolean`                                           | -           |
 
 --------
 
@@ -223,7 +248,7 @@ deserialize: res => {
 ---
 
 
-## Managing the socket
+## Usage
 
 ### Connecting
 ```ts
@@ -278,26 +303,55 @@ dispatch({ type: GET_POSTS, data: { offset: 0, limit: 20 } });
 
 ---
 
-## Options example
+## MiddlewareOptions declaration
 
 ```ts
 import { createSocketMiddleware, MiddlewareOptions } from 'redux-awesome-socket-middleware';
 
-type SocketRes = {
-  method: string;
-  result: {};
-};
-
 type ScoketReq = {
-  method: string;
-  data: {}
+  method: string
+  data: Record<string, unknown>
 };
 
-const options: MiddlewareOptions<ScoketReq, SocketRes> = {
+type SocketRes = {
+  [method: string]: Record<string, unknown>
+};
+
+type ScoketSerializedReq = {
+  [method: string]: Record<string, unknown>
+};
+
+type SocketDeserializedRes = Record<string, unknown>;
+
+const options: MiddlewareOptions<ScoketReq, SocketRes, ScoketSerializedReq, SocketDeserializedRes> = {
   url: 'ws://localhost:3000',
   actionTypes: ['SEND', 'CONNECT', 'DISCONNECT'],
-  completedActionTypes: ['CONNECTED', 'DISCONNECTED']
+  completedActionTypes: ['CONNECTED', 'DISCONNECTED'],
+
+  // serialize: (req: ScoketReq) => ScoketSerializedReq
+  serialize: ({ method, data }) => ({ [method]: data }),
+
+  // deserialize: (res: SocketRes) => SocketDeserializedRes
+  deserialize: (res: SocketRes) => res[Object.keys(res)[0]]
 };
 
 const socketMiddleware = createSocketMiddleware(options);
 ```
+
+### Passing own types to MiddlewareOptions type
+
+`MiddlewareOptions` is a generic type.
+
+```ts
+MiddlewareOptions<Req, Res, SReq = Req, DRes = Res>
+```
+
+`Req` - type of the socket request (required).
+
+`Res` - type of the socket response (required).
+
+`SReq` (default is `Req`) - type of serialized socket request which will be sent to the API (not required).<br>
+**This type should be returned from the MiddlewareOptions.serialize function.**
+
+`DRes` (default is `Res`) - type of deserialized socket response which is reachable by using hooks as `data` (not required).<br>
+**This type should be returned from the MiddlewareOptions.deserialize function.**
