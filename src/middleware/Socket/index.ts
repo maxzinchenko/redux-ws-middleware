@@ -1,5 +1,5 @@
 import { MiddlewareOptions, SocketAction, MiddlewareAPI } from './typedef';
-import { WebSocketService } from '../../services/Socket';
+import { WebSocketService } from '../../services/WebSocket';
 
 
 export const createSocketMiddleware = <Req, Res, SReq = Req, DRes = Res>({

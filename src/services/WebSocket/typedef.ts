@@ -1,4 +1,5 @@
-import { Dispatch } from '../../middleware/Socket/typedef';
+import { SocketDispatch } from '../../middleware/Socket/typedef';
+import { Deserializer, Serializer } from '../Serializer/typedef';
 
 export enum WebSocketEvent {
   OPEN = 'open',
@@ -14,25 +15,21 @@ export enum WebSocketState {
   CLOSED
 }
 
-export enum SocketActionType {
-  CONNECTED,
-  DISCONNECTED
-}
-
 export enum WebSocketClosingCode {
   FORCE_CLOSE = 1001
 }
 
 export type ShouldReconnect = (event: CloseEvent) => boolean;
-type Serialize<Req, SReq = Req> = (req: Req) => SReq;
-type Deserialize<Res, DRes = Res> = (res: Res) => DRes;
-type OnMessageCallback<Res> = (res: Res, dispatch: Dispatch) => void;
+type OnMessageCallback<Res> = (res: Res, dispatch: SocketDispatch) => void;
 
-export enum LogType {
-  LOG = 'log',
-  ERROR = 'error',
-  WARNING = 'warn'
-}
+type Short = 'shouldReconnect' | 'reconnectionInterval' | 'deserialize' | 'serialize' | 'debug';
+
+export type OptionsShort<
+  Req,
+  Res,
+  SReq = Req,
+  DRes = Res
+  > = Omit<Options<Req, Res, SReq, DRes>, Short>
 
 export type Options<Req, Res, SReq = Req, DRes = Res> = {
   url: string,
@@ -42,9 +39,6 @@ export type Options<Req, Res, SReq = Req, DRes = Res> = {
   reconnectionInterval?: number | number[],
   debug?: boolean,
   protocols?: string | string[],
-  serialize?: Serialize<Req, SReq>,
-  deserialize?: Deserialize<Res, DRes>
+  serialize?: Serializer<Req, SReq>,
+  deserialize?: Deserializer<Res, DRes>
 }
-
-type Handler =  (event: any) => void;
-export type Listeners = [WebSocketEvent, Handler][];

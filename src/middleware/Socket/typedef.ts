@@ -1,4 +1,4 @@
-import { Options } from '../../services/Socket/typedef';
+import { Options } from '../../services/WebSocket/typedef';
 
 
 type ActionType = string | RegExp;
@@ -24,11 +24,11 @@ export type DisconnectAction<T = string> = {
   }
 };
 
-export type Dispatch<A extends Action = AnyAction> = {
+export type SocketDispatch<A extends Action = AnyAction> = {
   <T extends A>(action: T): T;
 };
 
-export type MiddlewareAPI<D extends Dispatch = Dispatch, S = unknown> = {
+export type MiddlewareAPI<D extends SocketDispatch = SocketDispatch, S = unknown> = {
   dispatch: D
   getState(): S
 };

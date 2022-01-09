@@ -1,6 +1,6 @@
 {
   "name": "redux-awesome-socket-middleware",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "This package makes web socket management much easier with redux",
   "author": {
     "name": "Max Zinchenko",
