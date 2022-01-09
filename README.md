@@ -38,8 +38,8 @@ yarn add redux-awesome-socket-middleware
     - [Connecting](#connecting)
     - [Disconnecting](#disconnecting)
     - [Sending data](#sending-data)
-- [Options example](#options-example)
-  - [Passing own types to Options type](#passing-own-types-to-options-type)
+- [MiddlewareOptions declaration](#middlewareoptions-declaration)
+  - [Passing own types to MiddlewareOptions type](#passing-own-types-to-middlewareoptions-type)
 
 
 ---
