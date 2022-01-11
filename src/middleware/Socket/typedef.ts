@@ -15,7 +15,18 @@ export type AnyAction<T = any> = Action<T> & {
   [extraProps: string]: any;
 };
 
-export type DisconnectAction<T = string> = {
+export type CloseAction<T extends string = string> = {
+  type: T,
+  payload?: {
+    code?: number
+  },
+  data?: {
+    code?: number
+  },
+  code?: number
+};
+
+export type ClosedAction<T extends string = string> = {
   type: T,
   payload: {
     reason: string,
@@ -33,7 +44,7 @@ export type MiddlewareAPI<D extends SocketDispatch = SocketDispatch, S = unknown
   getState(): S
 };
 
-export type SocketAction<T, Req> = {
+export type SendAction<T, Req> = {
   type: T;
   payload?: Req;
   data?: Req;
