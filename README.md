@@ -180,7 +180,7 @@ autoConnect: false
 
 `((event: CloseEvent) => boolean) | boolean` - (`true` by default)
 
-When `true` the socket tries to reconnect if close status !== 1001.<br>
+When `true` the socket tries to reconnect if `event.code !== 1005`.<br>
 When predicate is passed you are able to decide if the sockets needs to be reconnected.
 
 ```ts
