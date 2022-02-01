@@ -8,15 +8,8 @@ export enum WebSocketEvent {
   MESSAGE = 'message'
 }
 
-export enum WebSocketState {
-  CONNECTING,
-  OPEN,
-  CLOSING,
-  CLOSED
-}
-
 export enum WebSocketClosingCode {
-  FORCE_CLOSE = 1001
+  FORCE_CLOSE = 1005
 }
 
 export type ShouldReconnect = (event: CloseEvent) => boolean;
@@ -29,7 +22,7 @@ export type OptionsShort<
   Res,
   SReq = Req,
   DRes = Res
-  > = Omit<Options<Req, Res, SReq, DRes>, Short>
+> = Omit<Options<Req, Res, SReq, DRes>, Short>;
 
 export type Options<Req, Res, SReq = Req, DRes = Res> = {
   url: string,
