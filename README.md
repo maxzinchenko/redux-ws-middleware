@@ -16,7 +16,7 @@ The package is built over the <a href="https://developer.mozilla.org/en-US/docs/
 
 ---
 
-`1.1.5` - stable release
+`1.1.6` - stable release
 
 ---
 

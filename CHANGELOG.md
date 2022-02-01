@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.6
+
+- Added es modules.
+
 ## 1.1.5
 
 - Fixed reconnection logs.
