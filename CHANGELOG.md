@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.1.6
+
+- Added es modules.
+
+## 1.1.5
+
+- Fixed reconnection logs.
+- Fixed reconnection service.
+- Added `SendAction` type.
+- Added `CloseAction` type.
+- Added `ClosedAction` type.
+
 ## 1.1.4
 
 - Fixed params that `serialize` and `deserialize` functions get called with.

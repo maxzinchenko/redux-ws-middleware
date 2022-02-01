@@ -16,6 +16,10 @@ The package is built over the <a href="https://developer.mozilla.org/en-US/docs/
 
 ---
 
+`1.1.6` - stable release
+
+---
+
 # Structure
 
 - [Installation](#installation)
@@ -176,7 +180,7 @@ autoConnect: false
 
 `((event: CloseEvent) => boolean) | boolean` - (`true` by default)
 
-When `true` the socket tries to reconnect if close status !== 1001.<br>
+When `true` the socket tries to reconnect if `event.code !== 1005`.<br>
 When predicate is passed you are able to decide if the sockets needs to be reconnected.
 
 ```ts
@@ -270,13 +274,18 @@ const otpions = {
   ...
   actionTypes: [SOCKET_SEND, SOCKET_CONNECT, SOCKET_DISCONNECT],
   ...
-}
+};
 
-dispatch({ type: SOCKET_CONNECT });
+const connectAction = () => ({ type: SOCKET_CONNECT });
+
+dispatch(connectAction());
 ```
 
 ### Disconnecting
+
 ```ts
+import { CloseAction } from 'redux-awesome-socket-middleware';
+
 const SOCKET_SEND = 'SCOKET_SEND';
 const SOCKET_CONNECT = 'SOCKET_CONNECT';
 const SOCKET_DISCONNECT = 'SOCKET_DISCONNECT';
@@ -285,16 +294,50 @@ const otpions = {
   ...
   actionTypes: [SOCKET_SEND, SOCKET_CONNECT, SOCKET_DISCONNECT],
   ...
-}
+};
 
-dispatch({ type: SOCKET_DISCONNECT });
+const disconnectAction = (code?: number): CloseAction<typeof SOCKET_DISCONNECT> => ({
+  type: SOCKET_DISCONNECT,
+  payload: { code }
+});
+
+OR
+
+dispatch(disconnectAction(1000));
 ```
+
+The `disconnectAction` can return:<br>
+
+```ts
+{
+  type: SOCKET_DISCONNECT,
+  code
+}
+```
+
+```ts
+{
+  type: SOCKET_DISCONNECT,
+  payload: { code }
+}
+```
+
+```ts
+{
+  type: SOCKET_DISCONNECT,
+  data: { code }
+}
+```
+
+(all these are supported by `CloseAction<typeof SOCKET_DISCONNECT>` type)
 
 ### Sending data
 
 The data can be sent in `payload` OR in `data` key.
 
 ```ts
+import { SendAction } from 'redux-awesome-socket-middleware';
+
 const GET_POSTS = 'GET_POSTS_REQUEST';
 
 const otpions = {
@@ -303,12 +346,31 @@ const otpions = {
   ...
 }
 
-dispatch({ type: GET_POSTS, payload: { offset: 0, limit: 20 } });
+const getPostsAction = (offset: number, limit: number): SendAction<typeof GET_POSTS> => ({
+  type: GET_POSTS,
+  payload: { offset, limit }
+});
 
-OR
-
-dispatch({ type: GET_POSTS, data: { offset: 0, limit: 20 } });
+dispatch(getPostsAction(0, 20));
 ```
+
+The `getPostsAction` can return:<br>
+
+```ts
+{
+  type: GET_POSTS,
+  payload: { code }
+}
+```
+
+```ts
+{
+  type: GET_POSTS,
+  data: { code }
+}
+```
+
+(all these are supported by `SendAction<typeof GET_POSTS>` type)
 
 
 ---

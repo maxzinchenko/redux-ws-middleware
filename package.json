@@ -1,6 +1,6 @@
 {
   "name": "redux-awesome-socket-middleware",
-  "version": "1.1.4",
+  "version": "1.1.6",
   "description": "This package makes web socket management much easier with redux",
   "author": {
     "name": "Max Zinchenko",
@@ -28,14 +28,17 @@
   "module": "es/index.js",
   "files": [
     "dist",
-    "types"
+    "types",
+    "es"
   ],
   "scripts": {
     "build": "rimraf ./dist && cross-env NODE_ENV=production rollup -c config/rollup.config.js",
     "build:types": "rimraf ./types && tsc --project ./tsconfig.types.json",
+    "build:es": "rimraf ./es && babel --extensions .ts,.tsx --ignore ./src/**/**/test/* ./src --out-dir es",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "prepublish": "yarn build && yarn build:types"
+    "prepublish": "yarn build && yarn build:types",
+    "test": "jest --config=config/jest.config.js"
   },
   "husky": {
     "hooks": {
@@ -61,8 +64,11 @@
     "@babel/plugin-proposal-private-methods": "7.16.7",
     "@babel/plugin-proposal-private-property-in-object": "7.16.7",
     "@babel/preset-env": "7.16.7",
+    "@babel/preset-typescript": "7.16.7",
     "@rollup/plugin-replace": "2.3.4",
     "@rollup/plugin-typescript": "8.2.1",
+    "@types/jest": "27.4.0",
+    "@types/node": "17.0.8",
     "@typescript-eslint/parser": "4.22.0",
     "cross-env": "7.0.2",
     "eslint": "7.10.0",
