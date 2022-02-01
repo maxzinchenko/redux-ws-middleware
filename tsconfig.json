@@ -15,7 +15,7 @@
     "noUnusedParameters": true,
     "skipLibCheck": true,
     "strict": true,
-    "types": ["jest"],
+    "types": ["jest", "node"],
     "outDir": "./dist"
   },
   "include": ["./src"],

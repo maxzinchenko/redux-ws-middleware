@@ -9,7 +9,7 @@ import typescript from '@rollup/plugin-typescript';
 
 const extensions = ['.js', '.jsx', '.es6', '.es', '.mjs', '.ts', '.tsx'];
 
-const input = 'src/index.test.ts';
+const input = 'src/index.ts';
 const external = ['react'];
 
 const output = {
