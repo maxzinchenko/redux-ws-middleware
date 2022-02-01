@@ -2,7 +2,7 @@ import { SocketDispatch } from '../../middleware/Socket/typedef';
 import { SocketActionType } from '../Redux/typedef';
 import { Options, WebSocketClosingCode, WebSocketEvent, ShouldReconnect, OptionsShort } from './typedef';
 import { LoggerService } from '../Logger';
-import { ReconnectorService } from '../Reconnector';
+import { ReconnectService } from '../Reconnect';
 import { ReduxService } from '../Redux';
 import { SerializerService } from '../Serializer';
 
@@ -12,7 +12,7 @@ export class WebSocketService<Req, Res, SReq = Req, DRes = Res> {
   readonly #shouldReconnect: ShouldReconnect | boolean;
 
   readonly #loggerService?: LoggerService;
-  readonly #reconnectorService: ReconnectorService;
+  readonly #reconnectorService: ReconnectService;
   readonly #reduxService: ReduxService;
   readonly #serializerService: SerializerService<Req, Res, SReq, DRes>;
 
@@ -24,7 +24,7 @@ export class WebSocketService<Req, Res, SReq = Req, DRes = Res> {
     this.#options = restOptions;
     this.#shouldReconnect = shouldReconnect ?? true;
 
-    this.#reconnectorService = new ReconnectorService(this.open, reconnectionInterval, debug);
+    this.#reconnectorService = new ReconnectService(this.open, reconnectionInterval, debug);
     this.#reduxService = new ReduxService(actionTypes, dispatch);
     this.#serializerService = new SerializerService(serialize, deserialize);
 
