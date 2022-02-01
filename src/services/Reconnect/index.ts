@@ -1,7 +1,7 @@
 import { LoggerService } from '../Logger';
 
 
-export class ReconnectorService {
+export class ReconnectService {
   readonly #interval: number | number[];
   readonly #callback: () => void;
 

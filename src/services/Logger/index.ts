@@ -4,8 +4,8 @@ export const PREFIX = 'use-socket';
 export class LoggerService {
   readonly #prefix: string;
 
-  constructor(prefix = PREFIX) {
-    this.#prefix = prefix;
+  constructor() {
+    this.#prefix = PREFIX;
   }
 
   log = (message: string, data?: unknown) => {
