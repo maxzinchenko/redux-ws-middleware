@@ -15,10 +15,6 @@ The package is built over the <a href="https://developer.mozilla.org/en-US/docs/
 
 ---
 
-`1.1.6` - stable release
-
---- 
-
 # Structure
 
 - [Installation](#installation)
@@ -30,6 +26,8 @@ The package is built over the <a href="https://developer.mozilla.org/en-US/docs/
   - [autoConnect](#autoConnect)
   - [protocols](#protocols)
   - [shouldReconnect](#shouldReconnect)
+  - [shouldOpen](#shouldOpen)
+  - [shouldClose](#shouldClose)
   - [reconnectionIntervals](#reconnectionInterval)
   - [serialize](#serialize)
   - [deserialize](#deserialize)
@@ -68,8 +66,10 @@ yarn add redux-awesome-socket-middleware
 | [onMessage](#onMessage)                        | Yes      | `(res: Res, dispatch: Dispatch<AnyAction>) => void` | -           |
 | [autoConnect](#autoConnect)                    | No       | `boolean`                                           | `true`      |
 | [protocols](#protocols)                        | No       | `string OR string[]`                                | -           |
-| [shouldReconnect](#shouldReconnect)            | No       | `((event: CloseEvent) => boolean) OR boolean`         | `true`      |
+| [shouldReconnect](#shouldReconnect)            | No       | `((event: CloseEvent) => boolean) OR boolean`       | `true`      |
 | [reconnectionIntervals](#reconnectionInterval) | No       | `number OR number[]`                                | `1000`      |
+| [shouldOpen](#shouldReconnect)                 | No       | `((req: Req) => boolean) OR boolean`                | `false`     |
+| [shouldClose](#shouldReconnect)                | No       | `((res: DRes) => boolean) OR boolean`               | `false`     |
 | [serialize](#serialize)                        | No       | `(req: Req) => SReq`                                | -           | 
 | [deserialize](#deserialize)                    | No       | `(res: Res) => DRes`                                | -           |
 | [debug](#debug)                                | No       | `boolean`                                           | -           |
@@ -97,7 +97,7 @@ url: 'wss://example.com'
 <b>WARNING: Sequence is important!</b><br>
 
 Types that you are able to manage the socket with.<br>
-You can manage socket be dispatching any of them.
+You can have socket dispatching any of them.
 
 The first element should be the `SEND` action type.<br>
 Second - `CONNECT` type. <br>
@@ -175,17 +175,6 @@ When `false` you need to dispatch the connect action with a type  `actionTypes[1
 autoConnect: false
 ```
 
-## shouldReconnect
-
-`((event: CloseEvent) => boolean) | boolean` - (`true` by default)
-
-When `true` the socket tries to reconnect if `event.code !== 1005`.<br>
-When predicate is passed you are able to decide if the sockets needs to be reconnected.
-
-```ts
-shouldReconnect: false
-```
-
 ## debug
 
 `boolean`
@@ -210,6 +199,18 @@ protocols: 'some protocol'
 protocols: ['some protocol']
 ```
 
+
+## shouldReconnect
+
+`((event: CloseEvent) => boolean) | boolean` - (`true` by default)
+
+When `true` the socket tries to reconnect if `event.code !== 1005`.<br>
+When predicate is passed you are able to decide if the socket needs to be reconnected.
+
+```ts
+shouldReconnect: false
+```
+
 ## reconnectionInterval
 
 `number | number[]` - (`1000` by default)
@@ -226,6 +227,38 @@ When the socket connects back the next reconnection loop will start from the `0`
 
 ```ts
 reconnectionInterval: [0, 1000, 2000, 3000, 4000, 5000, 10000]
+```
+
+## shouldOpen
+
+`((req: Req) => boolean) | boolean` - (`false` by default)
+
+When `true` the socket opens on any `send` action if connection is closed`.<br>
+When predicate is passed you are able to decide if socket needs to be open.
+
+```ts
+shouldOpen: true
+```
+
+When predicate is passed you are able to decide when socket needs to be open.
+
+```ts
+shouldOpen: (req: SomeReq) => req.method === 'load_session'
+```
+
+## shouldClose
+
+`((res: DRes) => boolean) | boolean` - (`false` by default)
+
+When `true` the socket closes connection after each response from the server.<br>
+When predicate is passed you are able to decide when the socket needs to be closed.
+
+```ts
+shouldClose: true
+```
+
+```ts
+shouldClose: (res: SomeDeserializedRes) => res.method === 'logout'
 ```
 
 ## serialize
