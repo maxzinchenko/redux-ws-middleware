@@ -13,9 +13,7 @@ The package is built over the <a href="https://developer.mozilla.org/en-US/docs/
   <img alt="npm downloads" src="https://img.shields.io/npm/dm/redux-awesome-socket-middleware.svg" />
 </a>
 
-
 ---
-
 
 # Structure
 
