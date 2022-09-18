@@ -99,7 +99,7 @@ url: 'wss://example.com'
 <b>WARNING: Sequence is important!</b><br>
 
 Types that you are able to manage the socket with.<br>
-You can manage socket be dispatching any of them.
+You can have socket dispatching any of them.
 
 The first element should be the `SEND` action type.<br>
 Second - `CONNECT` type. <br>

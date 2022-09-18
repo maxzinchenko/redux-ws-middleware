@@ -3,4 +3,6 @@ dist
 types
 es
 jest.config.js
+coverage
+config
 *.test.*
