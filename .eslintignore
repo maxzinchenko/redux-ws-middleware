@@ -1,5 +1,6 @@
 node_modules
 dist
-typedef
-*.test.*
+types
 es
+jest.config.js
+*.test.*

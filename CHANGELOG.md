@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.2.0
+
+- Added `shouldOpen` options prop.
+- Added `shouldClose` options prop.
+
+## 1.1.7
+
+- Fixed babel error.
+
 ## 1.1.6
 
 - Added es modules.

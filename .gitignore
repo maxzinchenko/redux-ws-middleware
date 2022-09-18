@@ -1,3 +1,5 @@
+# Root folder
+
 # Dependencies
 node_modules
 /.pnp
@@ -18,4 +20,32 @@ coverage
 
 # IDE's
 .idea
-.vscode
+
+
+# Examples folder
+
+# Dependencies
+examples/*/node_modules
+examples/*/.pnp
+examples/*/.pnp.js
+
+# Production builds
+examples/*/build
+
+# Misc
+examples/*/.DS_Store
+examples/*/.env.local
+examples/*/.env.development.local
+examples/*/.env.test.local
+examples/*/.env.production.local
+
+# Logs
+examples/*/npm-debug.log*
+examples/*/yarn-debug.log*
+examples/*/yarn-error.log*
+
+# Testing
+examples/*/coverage
+
+# IDE's
+examples/*/.idea

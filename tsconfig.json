@@ -1,23 +1,32 @@
 {
   "compilerOptions": {
-    "moduleResolution": "Node",
-    "module": "esnext",
-    "esModuleInterop": true,
-    "isolatedModules": true,
-    "lib": ["esnext", "dom"],
-    "target": "esnext",
-    "noEmit": false,
-    "emitDeclarationOnly": true,
-    "noImplicitAny": true,
-    "noImplicitReturns": false,
-    "noImplicitThis": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "skipLibCheck": true,
-    "strict": true,
-    "types": ["jest", "node"],
-    "outDir": "./dist"
+  "moduleResolution": "Node",
+  "target": "esnext",
+  "module": "esnext",
+  "esModuleInterop": true,
+  "isolatedModules": true,
+  "lib": ["esnext", "dom"],
+  "noEmit": false,
+  "removeComments": true,
+  "noImplicitAny": true,
+  "noImplicitReturns": false,
+  "noImplicitThis": true,
+  "noUnusedLocals": true,
+  "noUnusedParameters": true,
+  "skipLibCheck": true,
+  "allowSyntheticDefaultImports": true,
+  "forceConsistentCasingInFileNames": true,
+  "noFallthroughCasesInSwitch": true,
+  "resolveJsonModule": true,
+  "strict": true,
+  "outDir": "dist",
+  "baseUrl": "src",
+  "types": ["node", "jest"],
+  "paths": {
+    "~/middleware/*": ["middleware/*"],
+    "~/services/*": ["services/*"]
+   }
   },
-  "include": ["./src"],
-  "exclude": ["node_modules", "dist"]
+  "include": ["src"],
+  "exclude": ["node_modules", "dist", "jest.config.js"]
 }
