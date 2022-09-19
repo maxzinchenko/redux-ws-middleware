@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.2.13
+
+- Fixed compiling bug with SetIterator.
+
 ## 1.2.3
 
 - Fixed imports resolving.

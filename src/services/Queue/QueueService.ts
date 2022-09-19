@@ -1,11 +1,11 @@
-import { BaseService } from '../../services/BaseService';
+import { BaseService } from '../BaseService';
 
 export class QueueService<Req> extends BaseService {
+  readonly #queue = new Set<Req>([]);
+
   constructor(debug?: boolean) {
     super({ debug });
   }
-
-  readonly #queue = new Set<Req>();
 
   getValues = () => {
     return [...this.#queue.values()];

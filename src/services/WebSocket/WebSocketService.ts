@@ -1,9 +1,9 @@
-import { BaseService } from '../../services/BaseService';
-import { ReconnectService } from '../../services/Reconnect/ReconnectService';
-import { ReduxService } from '../../services/Redux/ReduxService';
-import { SocketDispatch } from '../../services/Redux/ReduxServiceTypes';
-import { SerializerService } from '../../services/Serializer/SerializerService';
-import { QueueService } from '../../services/Queue/QueueService';
+import { BaseService } from '../BaseService';
+import { ReconnectService } from '../Reconnect/ReconnectService';
+import { ReduxService } from '../Redux/ReduxService';
+import { SocketDispatch } from '../Redux/ReduxServiceTypes';
+import { SerializerService } from '../Serializer/SerializerService';
+import { QueueService } from '../Queue/QueueService';
 
 import { Options, WebSocketClosingCode, WebSocketEvent, ShouldReconnect, OptionsShort } from './WebSocketServiceTypes';
 
@@ -131,6 +131,8 @@ export class WebSocketService<Req, Res, SReq = Req, DRes = Res> extends BaseServ
     if (!queue.length) return;
 
     for (const req of queue) {
+      if (!req || !Object.keys(req).length) return;
+
       this.send(req);
       this.#queueService.remove(req);
     }
