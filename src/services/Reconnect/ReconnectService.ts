@@ -1,4 +1,4 @@
-import { BaseService } from '~/services/BaseService';
+import { BaseService } from '../../services/BaseService';
 
 export class ReconnectService extends BaseService {
   readonly #interval: number | number[];

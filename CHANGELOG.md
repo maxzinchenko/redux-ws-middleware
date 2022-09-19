@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.2.3
+
+- Fixed imports resolving.
+
 ## 1.2.1 - 1.2.2
 
 - Fixed es build.

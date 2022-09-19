@@ -1,9 +1,9 @@
-import { BaseService } from '~/services/BaseService';
-import { ReconnectService } from '~/services/Reconnect/ReconnectService';
-import { ReduxService } from '~/services/Redux/ReduxService';
-import { SocketDispatch } from '~/services/Redux/ReduxServiceTypes';
-import { SerializerService } from '~/services/Serializer/SerializerService';
-import { QueueService } from '~/services/Queue/QueueService';
+import { BaseService } from '../../services/BaseService';
+import { ReconnectService } from '../../services/Reconnect/ReconnectService';
+import { ReduxService } from '../../services/Redux/ReduxService';
+import { SocketDispatch } from '../../services/Redux/ReduxServiceTypes';
+import { SerializerService } from '../../services/Serializer/SerializerService';
+import { QueueService } from '../../services/Queue/QueueService';
 
 import { Options, WebSocketClosingCode, WebSocketEvent, ShouldReconnect, OptionsShort } from './WebSocketServiceTypes';
 
