@@ -232,6 +232,7 @@ reconnectionInterval: [0, 1000, 2000, 3000, 4000, 5000, 10000]
 ## shouldOpen
 
 `((req: Req) => boolean) | boolean` - (`false` by default)
+Req is a template of the generic MiddlewareOptions type
 
 When `true` the socket opens on any `send` action if connection is closed`.<br>
 When predicate is passed you are able to decide if socket needs to be open.
@@ -249,6 +250,7 @@ shouldOpen: (req: SomeReq) => req.method === 'load_session'
 ## shouldClose
 
 `((res: DRes) => boolean) | boolean` - (`false` by default)
+`DRes` is a templates of the generic `MiddlewareOptions` type
 
 When `true` the socket closes connection after each response from the server.<br>
 When predicate is passed you are able to decide when the socket needs to be closed.
