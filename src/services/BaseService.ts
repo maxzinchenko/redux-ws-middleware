@@ -1,4 +1,4 @@
-import { LoggerService } from '~/services/Logger/LoggerService';
+import { LoggerService } from '../services/Logger/LoggerService';
 
 import { BaseOptions } from './BaseServiceTypes';
 

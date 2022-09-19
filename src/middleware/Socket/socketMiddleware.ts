@@ -1,5 +1,5 @@
-import { AnyAction } from '~/services/Redux/ReduxServiceTypes';
-import { WebSocketService } from '~/services/WebSocket/WebSocketService';
+import { AnyAction } from '../../services/Redux/ReduxServiceTypes';
+import { WebSocketService } from '../../services/WebSocket/WebSocketService';
 
 import { MiddlewareOptions, MiddlewareAPI } from './socketMiddlewareTypes';
 

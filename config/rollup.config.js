@@ -23,7 +23,7 @@ const plugins = [
   resolve({ extensions }),
   typescript(),
   commonJS(),
-  babel({ extensions })
+  babel({ extensions, runtimeHelpers: true })
 ];
 
 const configDevelopment = {

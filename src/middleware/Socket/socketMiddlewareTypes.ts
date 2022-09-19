@@ -1,5 +1,5 @@
-import { SocketDispatch } from '~/services/Redux/ReduxServiceTypes';
-import { Options } from '~/services/WebSocket/WebSocketServiceTypes';
+import { SocketDispatch } from '../../services/Redux/ReduxServiceTypes';
+import { Options } from '../../services/WebSocket/WebSocketServiceTypes';
 
 type ActionType = string | RegExp;
 export type MiddlewareOptions<Req, Res, SReq = Req, DRes = Res> = Options<Req, Res, SReq, DRes> & {
