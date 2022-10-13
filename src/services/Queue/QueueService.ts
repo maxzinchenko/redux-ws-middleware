@@ -8,7 +8,7 @@ export class QueueService<Req> extends BaseService {
   }
 
   getValues = (): Req[] => {
-    return this.#queue.map(value => JSON.parse(value));
+    return this.#queue.map((value) => JSON.parse(value));
   };
 
   add = (data: Req) => {
