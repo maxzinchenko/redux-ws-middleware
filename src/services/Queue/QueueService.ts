@@ -1,30 +1,30 @@
 import { BaseService } from '../BaseService';
 
 export class QueueService<Req> extends BaseService {
-  readonly #queue = new Set<Req>([]);
+  #queue: string[] = [];
 
   constructor(debug?: boolean) {
     super({ debug });
   }
 
-  getValues = () => {
-    return [...this.#queue.values()];
+  getValues = (): Req[] => {
+    return this.#queue.map(value => JSON.parse(value));
   };
 
   add = (data: Req) => {
-    this.#queue.add(data);
+    this.#queue.push(JSON.stringify(data));
 
     this.log('Added to queue', data);
   };
 
   remove = (data: Req) => {
-    this.#queue.delete(data);
+    this.#queue.filter(value => JSON.stringify(data) === value);
 
     this.log('Removed from queue', data);
   };
 
   clear = () => {
-    this.#queue.clear();
+    this.#queue = [];
 
     this.log('Queue cleared');
   };

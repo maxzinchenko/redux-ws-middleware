@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.3.1
+
+- Fix cjs build.
+
+## 1.3.0
+
+- Changed build architecture.
+
 ## 1.2.13
 
 - Fixed compiling bug with SetIterator.
