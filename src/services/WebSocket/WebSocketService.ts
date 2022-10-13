@@ -131,8 +131,6 @@ export class WebSocketService<Req, Res, SReq = Req, DRes = Res> extends BaseServ
     if (!queue.length) return;
 
     for (const req of queue) {
-      if (!req || !Object.keys(req).length) return;
-
       this.send(req);
       this.#queueService.remove(req);
     }

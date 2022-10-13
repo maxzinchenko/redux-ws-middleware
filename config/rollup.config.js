@@ -1,54 +1,44 @@
 import replace from '@rollup/plugin-replace';
-import resolve from 'rollup-plugin-node-resolve';
-import commonJS from 'rollup-plugin-commonjs';
+import commonjs from '@rollup/plugin-commonjs';
 import externalDeps from 'rollup-plugin-peer-deps-external';
-import babel from 'rollup-plugin-babel';
+import resolve from '@rollup/plugin-node-resolve';
+import babel from '@rollup/plugin-babel';
+import typescript from '@rollup/plugin-typescript';
 import size from 'rollup-plugin-size';
 import { terser } from 'rollup-plugin-terser';
-import typescript from '@rollup/plugin-typescript';
-
-const extensions = ['.js', '.jsx', '.es6', '.es', '.mjs', '.ts', '.tsx'];
 
 const input = 'src/index.ts';
-const external = ['react'];
+const formats = ['cjs', 'esm', 'umd'];
+const output = { name: 'ReduxAwesomeSocketMiddleware', sourcemap: true, exports: 'named' };
 
-const output = {
-  name: 'ReduxAwesomeSocketMiddleware',
-  format: 'umd',
-  sourcemap: true
-};
+const createRollupConfig = format => {
+  const extension = format === 'esm' ? 'mjs' : 'js';
+  const file = `dist/index.${format}.${format === 'cjs' ? 'cjs' : extension}`;
 
-const plugins = [
-  externalDeps(),
-  resolve({ extensions }),
-  typescript(),
-  commonJS(),
-  babel({ extensions, runtimeHelpers: true })
-];
+  const plugins = [
+    externalDeps(),
+    typescript({ exclude: ['.test.ts'] }),
+    babel({ extensions: ['.ts', '.js'], babelHelpers: 'bundled' })
+  ];
 
-const configDevelopment = {
-  input,
-  output: {
-    ...output,
-    file: 'dist/redux-awesome-socket-middleware.development.js'
-  },
-  external,
-  plugins
-};
+  if (format === 'umd') {
+    plugins.push(commonjs({ include: /\/node_modules\// }))
+  }
 
-const configProduction = {
-  input,
-  output: {
-    ...output,
-    file: 'dist/redux-awesome-socket-middleware.production.min.js'
-  },
-  external,
-  plugins: [
-    ...plugins,
-    terser(),
-    replace({ 'process.env.NODE_ENV': '"production"', delimiters: ['', ''] }),
-    size({ writeFile: false })
-  ]
-};
+  if (format !== 'esm') {
+    plugins.push(
+      terser({ output: { comments: false } }),
+      replace({ 'process.env.NODE_ENV': '"production"', delimiters: ['', ''] }),
+      size({ writeFile: false })
+    )
+  }
 
-export default [configDevelopment, configProduction];
+  return {
+    input,
+    output: { ...output, file, format },
+    external: ['react'],
+    plugins: plugins.filter(Boolean)
+  };
+}
+
+export default formats.map(createRollupConfig);;
