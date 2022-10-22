@@ -1,8 +1,12 @@
 # Changelog
 
+## 1.3.2
+
+- Fixed the queue of unset request.
+
 ## 1.3.1
 
-- Fix cjs build.
+- Fixed cjs build.
 
 ## 1.3.0
 

@@ -12,13 +12,17 @@ export class QueueService<Req> extends BaseService {
   };
 
   add = (data: Req) => {
-    this.#queue.push(JSON.stringify(data));
+    const uniqueRequest = this.#getUniqueRequest(data);
+    if (!uniqueRequest) return;
+
+    this.#queue.push(uniqueRequest);
 
     this.log('Added to queue', data);
   };
 
   remove = (data: Req) => {
-    this.#queue.filter(value => JSON.stringify(data) === value);
+    const stringifiedRequest = JSON.stringify(data);
+    this.#queue = this.#queue.filter((value) => value !== stringifiedRequest);
 
     this.log('Removed from queue', data);
   };
@@ -27,5 +31,20 @@ export class QueueService<Req> extends BaseService {
     this.#queue = [];
 
     this.log('Queue cleared');
+  };
+
+  /*
+   * Private
+   */
+
+  #getUniqueRequest = (data: Req) => {
+    const stringifiedRequest = JSON.stringify(data);
+    const exisitngRequest = this.#queue.includes(stringifiedRequest);
+    if (exisitngRequest) {
+      this.log('Already in queue', data);
+      return null;
+    }
+
+    return stringifiedRequest;
   };
 }
