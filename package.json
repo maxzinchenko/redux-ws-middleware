@@ -1,6 +1,6 @@
 {
-  "name": "redux-awesome-socket-middleware",
-  "version": "1.3.2",
+  "name": "redux-ws-middleware",
+  "version": "1.0.0",
   "description": "This package makes web socket management much easier with redux",
   "author": {
     "name": "Max Zinchenko",
@@ -10,19 +10,21 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/maxzinchenko/redux-awesome-socket-middleware"
+    "url": "https://github.com/maxzinchenko/redux-ws-middleware"
   },
   "keywords": [
     "react",
     "redux",
     "websocket",
     "socket",
+    "ws",
     "middleware",
     "redux-middleware",
     "redux-websocket",
+    "redux-ws",
     "redux-socket"
   ],
-  "main": "dist/index.cjs.cjs",
+  "main": "dist/index.cjs.js",
   "unpkg": "dist/index.umd.js",
   "module": "dist/index.esm.mjs",
   "umd:main": "dist/index.umd.js",
@@ -32,14 +34,13 @@
     "dist",
     "types"
   ],
-  "type": "module",
   "scripts": {
-    "build": "rimraf ./dist && cross-env NODE_ENV=production rollup -c config/rollup.config.js",
+    "build": "rimraf ./dist && cross-env NODE_ENV=production rollup -c config/rollup.config.js --bundleConfigAsCjs",
     "build:types": "rimraf ./types && tsc --project ./tsconfig.types.json",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "publish": "yarn build && yarn build:types",
-    "test": "jest --config=config/jest.config.cjs"
+    "test": "jest --config=config/jest.config.js"
   },
   "husky": {
     "hooks": {

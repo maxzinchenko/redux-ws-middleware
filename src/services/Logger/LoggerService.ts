@@ -1,4 +1,4 @@
-const PREFIX = 'socket-middleware';
+const PREFIX = 'redux-ws-middleware';
 
 export class LoggerService {
   readonly #prefix = PREFIX;

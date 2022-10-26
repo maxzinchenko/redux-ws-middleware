@@ -14,7 +14,7 @@ describe('BaseService', () => {
     baseService = new BaseService({ debug: true });
   });
 
-  describe('.log', () => {  
+  describe('.log', () => {
     const message = 'test log';
     const payload = { test: 'test', nested: { test: true } };
 
@@ -26,11 +26,11 @@ describe('BaseService', () => {
     });
   });
 
-  describe('.error', () => {  
+  describe('.error', () => {
     const message = 'test error';
     const payload = { test: 'test', nested: { test: true } };
 
-    it('shouild call the error method of the loggerService instance', () => {
+    it('should call the error method of the loggerService instance', () => {
       baseService.error(message, payload);
 
       expect(error).toBeCalledTimes(1);
