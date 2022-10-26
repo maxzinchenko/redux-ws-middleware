@@ -1,4 +1,4 @@
-# Redux Awesome Socket Middleware
+# Redux WebSocket Middleware
 
 This package makes web socket management much easier with redux.<br>
 The package is built over the <a href="https://developer.mozilla.org/en-US/docs/Web/API/WebSocket/WebSocket">WebSocket</a> constructor from browser API.
@@ -47,10 +47,10 @@ The package is built over the <a href="https://developer.mozilla.org/en-US/docs/
 
 ```
 # using npm
-npm install redux-awesome-socket-middleware
+npm install redux-ws-middleware
 
 # using yarn
-yarn add redux-awesome-socket-middleware
+yarn add redux-ws-middleware
 ```
 
 ---
