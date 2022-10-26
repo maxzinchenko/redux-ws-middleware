@@ -47,10 +47,10 @@ The package is built over the <a href="https://developer.mozilla.org/en-US/docs/
 
 ```
 # using npm
-npm install redux-awesome-socket-middleware
+npm install redux-ws-middleware
 
 # using yarn
-yarn add redux-awesome-socket-middleware
+yarn add redux-ws-middleware
 ```
 
 ---
