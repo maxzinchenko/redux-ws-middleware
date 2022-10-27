@@ -1,6 +1,6 @@
 {
   "name": "redux-ws-middleware",
-  "version": "1.0.3",
+  "version": "1.0.5",
   "description": "This package makes web socket management much easier with redux",
   "author": {
     "name": "Max Zinchenko",
@@ -37,9 +37,9 @@
   "scripts": {
     "build": "rimraf ./dist && cross-env NODE_ENV=production rollup -c config/rollup.config.js --bundleConfigAsCjs",
     "build:types": "rimraf ./types && tsc --project ./tsconfig.types.json",
+    "build:all": "yarn build && yarn build:types",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "publish": "yarn build && yarn build:types",
     "test": "jest --config=config/jest.config.js"
   },
   "husky": {
