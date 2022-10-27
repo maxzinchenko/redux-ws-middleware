@@ -6,7 +6,6 @@ node_modules
 .pnp.js
 
 # Production builds
-es
 dist
 types
 
@@ -20,6 +19,9 @@ coverage
 
 # IDE's
 .idea
+
+# Mac
+.DS_Store
 
 
 # Examples folder

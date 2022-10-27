@@ -3,13 +3,13 @@
 This package makes web socket management much easier with redux.<br>
 The package is built over the <a href="https://developer.mozilla.org/en-US/docs/Web/API/WebSocket/WebSocket">WebSocket</a> constructor from browser API.
 
-<a href="https://npmjs.com/package/redux-awesome-socket-middleware" target="\_blank">
+<a href="https://npmjs.com/package/redux-ws-middleware" target="\_blank">
   <img alt="npm version" src="https://img.shields.io/npm/v/redux-awesome-socket-middleware.svg" />
 </a>
-<a href="https://bundlephobia.com/result?p=redux-awesome-socket-middleware@latest" target="\_blank">
+<a href="https://bundlephobia.com/result?p=redux-ws-middleware@latest" target="\_blank">
   <img alt="size" src="https://badgen.net/bundlephobia/minzip/redux-awesome-socket-middleware@latest" />
 </a>
-<a href="https://npmjs.com/package/redux-awesome-socket-middleware" target="\_blank">
+<a href="https://npmjs.com/package/redux-ws-middleware" target="\_blank">
   <img alt="npm downloads" src="https://img.shields.io/npm/dm/redux-awesome-socket-middleware.svg" />
 </a>
 

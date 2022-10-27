@@ -42,9 +42,9 @@ export class WebSocketService<Req, Res, SReq = Req, DRes = Res> extends BaseServ
   }
 
   open = () => {
-    const { url, protocols } = this.#options;
-
     if (typeof window === 'undefined' || this.#ws) return;
+
+    const { url, protocols } = this.#options;
 
     this.#ws = new WebSocket(url, protocols);
     this.#setListeners();
@@ -52,6 +52,7 @@ export class WebSocketService<Req, Res, SReq = Req, DRes = Res> extends BaseServ
 
   send = (req: Req) => {
     const isOpen = this.#checkOpenStateAndOpenConnection(req);
+    console.log({ isOpen, ws: this.#ws });
     if (!isOpen) return;
 
     const message = this.#serializerService.serialize(req);
