@@ -76,9 +76,11 @@ yarn add redux-ws-middleware
 
 --------
 
-## url (required)
+## url
 
-`string`
+<b>Required*</b>
+
+Type: `string`
 
 Url for the <a href="https://developer.mozilla.org/en-US/docs/Web/API/WebSocket/WebSocket">WebSocket</a> constructor.
 
@@ -90,9 +92,11 @@ url: 'ws://localhost:3000'
 url: 'wss://example.com'
 ```
 
-## actionTypes (required)
+## actionTypes
 
-`[RegExp | string, RegExp | string, RegExp | string]`
+<b>Required*</b>
+
+Type: `[RegExp | string, RegExp | string, RegExp | string]`
 
 <b>WARNING: Sequence is important!</b><br>
 
@@ -125,9 +129,11 @@ actionTypes: ['SEND']
 actionTypes: [new RegExp(/_REQUEST/g)]
 ```
 
-## completedActionTypes (required)
+## completedActionTypes
 
-`[string, string]`
+<b>Required*</b>
+
+Type: `[string, string]`
 
 <b>WARNING: Sequence is important!</b>
 
@@ -137,9 +143,11 @@ Types that you receive back on actions.
 completedActionTypes: ['CONNECTED', 'DISCONNECTED']
 ```
 
-## onMessage (required)
+## onMessage
 
-`(res: Res, dispatch: Dispatch<AnyAction>) => void`
+<b>Required*</b>
+
+Type: `(res: Res, dispatch: Dispatch<AnyAction>) => void`
 
 The callback gets called with deserialized data already, if you put deserialize function into options, or with a normal data if you don't. And with a `dispatch` so you can manage your store.
 
@@ -166,7 +174,7 @@ onMessage: (data, dispatch) => {
 
 ## autoConnect
 
-`boolean` - (`true` by default)
+Type: `boolean` - (`true` by default)
 
 When `true` you don't need to send anything else to connect it.<br>
 When `false` you need to dispatch the connect action with a type  `actionTypes[1]`.
@@ -177,7 +185,7 @@ autoConnect: false
 
 ## debug
 
-`boolean`
+Type: `boolean`
 
 When `true` the package shows additional logs.
 
@@ -187,7 +195,7 @@ debug: ture
 
 ## protocols
 
-`boolean`
+Type: `string | string[]`
 
 Protocols for the <a href="https://developer.mozilla.org/en-US/docs/Web/API/WebSocket/WebSocket">WebSocket</a> constructor.
 
@@ -202,7 +210,7 @@ protocols: ['some protocol']
 
 ## shouldReconnect
 
-`((event: CloseEvent) => boolean) | boolean` - (`true` by default)
+Type: `((event: CloseEvent) => boolean) | boolean` - (`true` by default)
 
 When `true` the socket tries to reconnect if `event.code !== 1005`.<br>
 When predicate is passed you are able to decide if the socket needs to be reconnected.
@@ -213,7 +221,7 @@ shouldReconnect: false
 
 ## reconnectionInterval
 
-`number | number[]` - (`1000` by default)
+Type: `number | number[]` - (`1000` by default)
 
 <b>In milliseconds.</b><br>
 When array each new connection uses the next number from the array for a timeout to avoid DDOSing a server.
@@ -231,7 +239,7 @@ reconnectionInterval: [0, 1000, 2000, 3000, 4000, 5000, 10000]
 
 ## shouldOpen
 
-`((req: Req) => boolean) | boolean` - (`false` by default)
+Type: `((req: Req) => boolean) | boolean` - (`false` by default)
 Req is a template of the generic MiddlewareOptions type
 
 When `true` the socket opens on any `send` action if connection is closed`.<br>
@@ -249,7 +257,8 @@ shouldOpen: (req: SomeReq) => req.method === 'load_session'
 
 ## shouldClose
 
-`((res: DRes) => boolean) | boolean` - (`false` by default)
+Type: `((res: DRes) => boolean) | boolean` - (`false` by default)
+
 `DRes` is a templates of the generic `MiddlewareOptions` type
 
 When `true` the socket closes connection after each response from the server.<br>
@@ -265,7 +274,8 @@ shouldClose: (res: SomeDeserializedRes) => res.method === 'logout'
 
 ## serialize
 
-`(req: Req) => SReq`<br>
+Type: `(req: Req) => SReq`<br>
+
 `Req` and `SReq` are templates of the generic `MiddlewareOptions` type
 
 The format function gets called to prepare the data to get submitted to the server. For example, `camelCase` to `snake_case` conversion.
@@ -281,7 +291,8 @@ serialize: req => {
 
 ## deserialize
 
-`(res: Res) => DRes`<br>
+Type: `(res: Res) => DRes`<br>
+
 `Res` and `DRes` are templates of the generic `MiddlewareOptions` type
 
 The format function gets called to prepare the message to get submitted to the `onMessage` callback. For example, `snake_case` to `camelCase` conversion.
