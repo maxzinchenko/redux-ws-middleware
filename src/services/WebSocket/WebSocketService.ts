@@ -52,7 +52,6 @@ export class WebSocketService<Req, Res, SReq = Req, DRes = Res> extends BaseServ
 
   send = (req: Req) => {
     const isOpen = this.#checkOpenStateAndOpenConnection(req);
-    console.log({ isOpen, ws: this.#ws });
     if (!isOpen) return;
 
     const message = this.#serializerService.serialize(req);
