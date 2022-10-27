@@ -107,12 +107,14 @@ The first element should be the `SEND` action type.<br>
 Second - `CONNECT` type. <br>
 Third - `DISCONNECT` type.
 
+<b>IMPORTANT: Do not use `/g` at the end of RegExp!</b>
+
 ```ts
 actionTypes: ['SEND', 'CONNECT', 'DISCONNECT']
 ```
 
 ```ts
-actionTypes: [new RegExp(/_REQUEST/g), 'CONNECT', 'DISCONNECT']
+actionTypes: [new RegExp(/_REQUEST$/), 'CONNECT', 'DISCONNECT']
 ```
 
 If you don't need these: `CONNECT`, `DISCONNECT` so just don't send them.
@@ -126,7 +128,7 @@ actionTypes: ['SEND']
 ```
 
 ```ts
-actionTypes: [new RegExp(/_REQUEST/g)]
+actionTypes: [new RegExp(/_REQUEST$/)]
 ```
 
 ## completedActionTypes
@@ -387,7 +389,7 @@ const GET_POSTS = 'GET_POSTS_REQUEST';
 
 const otpions = {
   ...
-  actionTypes: [new RegExp(/_REQUEST/g)],
+  actionTypes: [new RegExp(/_REQUEST$/)],
   ...
 }
 
