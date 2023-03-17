@@ -4,4 +4,4 @@ export type {
   ClosedAction,
   CloseAction,
   SendAction
-} from './middleware/Socket/socketMiddlewareTypes';
+} from './middleware/Socket/socketMiddleware.types';

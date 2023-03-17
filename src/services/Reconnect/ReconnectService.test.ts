@@ -6,7 +6,7 @@ describe('ReconnectService', () => {
   let connectCallback: jest.Mock;
 
   const intervals = [0, 1000, 5000];
-  
+
   beforeEach(() => {
     jest.useFakeTimers();
     jest.spyOn(window, 'setTimeout');
@@ -16,10 +16,10 @@ describe('ReconnectService', () => {
     reconnectService = new ReconnectService(connectCallback, intervals);
   });
 
-  describe('.startJob', () => {  
+  describe('.startJob', () => {
     const intervalsLength = intervals.length;
     const lastIntervalIdx = intervalsLength - 1;
-    
+
     it('should call callback and use correct interval', () => {
       const testLaps = intervalsLength + 5;
 
@@ -40,11 +40,11 @@ describe('ReconnectService', () => {
     });
   });
 
-  describe('.removeJob', () => {  
-    it('should clear pending timeot', () => {
+  describe('.removeJob', () => {
+    it('should clear pending timeout', () => {
       reconnectService.startJob();
       expect(setTimeout).toBeCalledTimes(1);
-      
+
       reconnectService.removeJob();
       expect(clearTimeout).toBeCalledTimes(1);
     });

@@ -1,5 +1,5 @@
 import { WebSocketService } from './WebSocketService';
-import { Options } from './WebSocketServiceTypes';
+import { Options } from './WebSocketService.types';
 
 enum ActionType {
   CONNECTED = 'testConnected',

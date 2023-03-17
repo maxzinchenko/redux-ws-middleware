@@ -1,5 +1,5 @@
-import { Deserializer, Serializer } from '../../services/Serializer/SerializerServiceTypes';
-import { SocketDispatch } from '../../services/Redux/ReduxServiceTypes';
+import { Deserializer, Serializer } from '../Serializer/SerializerService.types';
+import { SocketDispatch } from '../Redux/ReduxService.types';
 
 export enum WebSocketEvent {
   OPEN = 'open',

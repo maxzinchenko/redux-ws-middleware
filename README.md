@@ -7,7 +7,10 @@ The package is built over the <a href="https://developer.mozilla.org/en-US/docs/
   <img alt="npm version" src="https://img.shields.io/npm/v/redux-ws-middleware.svg" />
 </a>
 <a href="https://bundlephobia.com/result?p=redux-ws-middleware@latest" target="\_blank">
-  <img alt="size" src="https://badgen.net/bundlephobia/minzip/redux-ws-middleware@latest" />
+  <img alt="size" src="https://flat-badgen.vercel.app/bundlephobia/minzip/redux-ws-middleware@latest" />
+</a>
+<a href="https://bundlephobia.com/result?p=redux-ws-middleware@latest" target="\_blank">
+  <img alt="size" src="https://flat-badgen.vercel.app/bundlephobia/min/redux-ws-middleware@latest" />
 </a>
 <a href="https://npmjs.com/package/redux-ws-middleware" target="\_blank">
   <img alt="npm downloads" src="https://img.shields.io/npm/dm/redux-ws-middleware.svg" />

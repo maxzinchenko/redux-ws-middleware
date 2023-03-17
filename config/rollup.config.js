@@ -21,7 +21,7 @@ const createRollupConfig = format => {
   ];
 
   if (format === 'umd') {
-    plugins.push(commonjs({ include: /\/node_modules\// }))
+    plugins.push(commonjs({ include: /\/node_modules\// }));
   }
 
   if (format !== 'esm') {
@@ -29,7 +29,7 @@ const createRollupConfig = format => {
       terser({ output: { comments: false } }),
       replace({ 'process.env.NODE_ENV': '"production"', delimiters: ['', ''] }),
       size({ writeFile: false })
-    )
+    );
   }
 
   return {

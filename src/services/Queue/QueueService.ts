@@ -1,34 +1,34 @@
 import { BaseService } from '../BaseService';
 
 export class QueueService<Req> extends BaseService {
-  #queue: string[] = [];
+  private queue: string[] = [];
 
   constructor(debug?: boolean) {
     super({ debug });
   }
 
   getValues = (): Req[] => {
-    return this.#queue.map((value) => JSON.parse(value));
+    return this.queue.map((value) => JSON.parse(value));
   };
 
   add = (data: Req) => {
-    const uniqueRequest = this.#getUniqueRequest(data);
+    const uniqueRequest = this.getUniqueRequest(data);
     if (!uniqueRequest) return;
 
-    this.#queue.push(uniqueRequest);
+    this.queue.push(uniqueRequest);
 
     this.log('Added to queue', data);
   };
 
   remove = (data: Req) => {
-    const stringifiedRequest = JSON.stringify(data);
-    this.#queue = this.#queue.filter((value) => value !== stringifiedRequest);
+    const stringifyRequest = JSON.stringify(data);
+    this.queue = this.queue.filter((value) => value !== stringifyRequest);
 
     this.log('Removed from queue', data);
   };
 
   clear = () => {
-    this.#queue = [];
+    this.queue = [];
 
     this.log('Queue cleared');
   };
@@ -37,14 +37,14 @@ export class QueueService<Req> extends BaseService {
    * Private
    */
 
-  #getUniqueRequest = (data: Req) => {
-    const stringifiedRequest = JSON.stringify(data);
-    const exisitngRequest = this.#queue.includes(stringifiedRequest);
-    if (exisitngRequest) {
+  private getUniqueRequest = (data: Req) => {
+    const stringifyRequest = JSON.stringify(data);
+    const existingRequest = this.queue.includes(stringifyRequest);
+    if (existingRequest) {
       this.log('Already in queue', data);
       return null;
     }
 
-    return stringifiedRequest;
+    return stringifyRequest;
   };
 }

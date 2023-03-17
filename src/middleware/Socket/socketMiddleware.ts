@@ -1,7 +1,7 @@
-import { AnyAction } from '../../services/Redux/ReduxServiceTypes';
+import { AnyAction } from '../../services/Redux/ReduxService.types';
 import { WebSocketService } from '../../services/WebSocket/WebSocketService';
 
-import { MiddlewareOptions, MiddlewareAPI, ActionType } from './socketMiddlewareTypes';
+import { MiddlewareOptions, MiddlewareAPI, ActionType } from './socketMiddleware.types';
 
 const getTypeCheck = (actionType: ActionType) => {
   const isRegExp = actionType instanceof RegExp;
