@@ -7,7 +7,7 @@ node_modules
 
 # Production builds
 dist
-types
+/types
 
 # Logs
 npm-debug.log*

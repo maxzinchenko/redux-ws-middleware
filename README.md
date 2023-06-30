@@ -18,6 +18,13 @@ The package is built over the <a href="https://developer.mozilla.org/en-US/docs/
 
 ---
 
+# Examples
+
+- [Single socket](https://github.com/maxzinchenko/redux-ws-middleware/tree/master/examples/single-socket)
+
+
+---
+
 # Structure
 
 - [Installation](#installation)
@@ -334,7 +341,7 @@ dispatch(connectAction());
 ### Disconnecting
 
 ```ts
-import { CloseAction } from 'redux-awesome-socket-middleware';
+import { CloseAction } from 'redux-ws-middleware';
 
 const SOCKET_SEND = 'SCOKET_SEND';
 const SOCKET_CONNECT = 'SOCKET_CONNECT';
@@ -386,7 +393,7 @@ The `disconnectAction` can return:<br>
 The data can be sent in `payload` OR in `data` key.
 
 ```ts
-import { SendAction } from 'redux-awesome-socket-middleware';
+import { SendAction } from 'redux-ws-middleware';
 
 const GET_POSTS = 'GET_POSTS_REQUEST';
 
@@ -428,7 +435,7 @@ The `getPostsAction` can return:<br>
 ## MiddlewareOptions declaration
 
 ```ts
-import { createSocketMiddleware, MiddlewareOptions } from 'redux-awesome-socket-middleware';
+import { createSocketMiddleware, MiddlewareOptions } from 'redux-ws-middleware';
 
 type ScoketReq = {
   method: string

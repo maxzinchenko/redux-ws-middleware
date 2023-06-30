@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.8
+
+- Added example for single socket connection
+
 ## 1.0.7
 
 - Replaced private methods `#` (ES13) with `private` (TypeScript).
